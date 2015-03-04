@@ -10,6 +10,7 @@ namespace Laasti\Stack;
 
 use Laasti\Services\StackInterface;
 use Laasti\Services\MiddlewareInterface;
+use Laasti\Services\MiddlewareTerminableInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Stack implements StackInterface
 {
-
+    const TERMINABLE_INTERFACE = "Laasti\Services\MiddlewareTerminableInterface";
     protected $middlewares = [];
 
     public function unshift(MiddlewareInterface $obj)
@@ -28,7 +29,9 @@ class Stack implements StackInterface
         array_unshift($this->middlewares, func_get_args());
         return $this;
     }
-
+    
+    //TODO: Should it be permitted for a terminate only middleware to be added?
+    //Maybe it would be better to have a middleware that calls those terminate only objects
     public function push(MiddlewareInterface $obj)
     {
         array_push($this->middlewares, func_get_args());
@@ -52,7 +55,13 @@ class Stack implements StackInterface
             }
             array_unshift($spec, $request);
             $return = call_user_func_array([$middleware, 'handle'], $spec);
-            $this->middlewares[$key] = $middleware;
+            
+            //Save for terminate request if terminableInterface
+            if (! $middleware instanceof MiddlewareTerminableInterface) {
+                unset($this->middlewares[$key]);
+            } else {
+                $this->middlewares[$key] = $middleware;
+            }
 
             if ($return instanceof Request) {
                 continue;
@@ -70,11 +79,23 @@ class Stack implements StackInterface
         $inverted = array_reverse($this->middlewares);
         
         foreach ($inverted as $spec) {
+            //Middleware already instantiated
             if (is_object($spec)) {
                 $middleware = $spec;
             } else {
-                $class = array_shift($spec);
-                $middleware = new $class;
+                //TODO: This code is shaky
+                $classname = array_shift($spec);
+                if (is_object($classname)) {
+                    $middleware = $classname;
+                } else {
+                    $class = new \ReflectionClass($classname);
+                    echo $classname;
+                    if ( $class->implementsInterface(self::TERMINABLE_INTERFACE) ) {
+                        $middleware = $class->newInstance();
+                    } else {
+                        continue;
+                    }
+                }
             }
 
             call_user_func_array([$middleware, 'terminate'], array($request, $response));

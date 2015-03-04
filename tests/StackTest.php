@@ -1,6 +1,6 @@
 <?php
 
-namespace Laasti\Test;
+namespace Laasti\Stack\Test;
 
 use Laasti\Stack;
 use Laasti\Services\StackInterface;
@@ -48,12 +48,13 @@ class StackTest extends \PHPUnit_Framework_TestCase
 
     public function testStackUnshift()
     {
-
         $stack = new Stack\Stack();
 
         $middleware = $this->getMock('Laasti\Services\MiddlewareInterface');
         $middleware->expects($this->any())->method('handle')->will($this->returnArgument(0));
         $stack->push($middleware);
+        
+        //This middleware should be called first
         $middleware = $this->getMock('Laasti\Services\MiddlewareInterface');
         $middleware->expects($this->exactly(1))->method('handle')->will($this->returnValue(new Response));
         $stack->unshift($middleware);
@@ -64,9 +65,11 @@ class StackTest extends \PHPUnit_Framework_TestCase
 
     public function testStackClose()
     {
+        require_once 'TerminableMiddleware.php';
         $stack = new Stack\Stack();
 
-        $middleware = $this->getMock('Laasti\Services\MiddlewareInterface');
+        //Terminate should be called
+        $middleware = $this->getMock('Laasti\Stack\Test\TerminableMiddleware');
         $middleware->expects($this->any())->method('handle')->will($this->returnValue(new Response));
         $middleware->expects($this->exactly(1))->method('terminate')->will($this->throwException(new \Exception('My Test Exception')));
         $stack->push($middleware);
@@ -81,14 +84,16 @@ class StackTest extends \PHPUnit_Framework_TestCase
 
     public function testUnshiftStackClose()
     {
+        require_once 'TerminableMiddleware.php';
         $stack = new Stack\Stack();
 
-        $middleware = $this->getMock('Laasti\Services\MiddlewareInterface');
+        //Terminate is called from last middleware to first middleware
+        $middleware = $this->getMock('Laasti\Stack\Test\TerminableMiddleware');
         $middleware->expects($this->any())->method('handle')->will($this->returnValue(new Response));
         $middleware->expects($this->exactly(1))->method('terminate')->will($this->throwException(new \Exception('My Test Exception Push')));
         $stack->push($middleware);
 
-        $middleware2 = $this->getMock('Laasti\Services\MiddlewareInterface');
+        $middleware2 = $this->getMock('Laasti\Stack\Test\TerminableMiddleware');
         $middleware2->expects($this->any())->method('handle')->will($this->returnValue(new Response));
         $middleware2->expects($this->any())->method('terminate')->will($this->throwException(new \Exception('My Test Exception Unshift')));
         $stack->unshift($middleware2);

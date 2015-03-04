@@ -4,15 +4,15 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2faba2d80ba5210bf15d19678edc3555",
+    "hash": "b2eedb53b341a17544777e0c075125da",
     "packages": [
         {
             "name": "laasti/application",
-            "version": "dev-master",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "C:/wamp/www/laasti/application",
-                "reference": "acfde8b3617044bfff338886ee2a03efbeab373b"
+                "reference": "7094e7146f70e7976a256ee9881e1668b7e30acd"
             },
             "require": {
                 "league/container": "~1.3",
@@ -22,8 +22,8 @@
             "require-dev": {
                 "laasti/profiler": "master",
                 "laasti/stack": "master",
-                "phpunit/phpunit": "~4.7@dev",
-                "squizlabs/php_codesniffer": "dev-master"
+                "phpunit/phpunit": "~4.5",
+                "squizlabs/php_codesniffer": "~2.3"
             },
             "type": "library",
             "autoload": {
@@ -41,7 +41,7 @@
                 }
             ],
             "description": "The core for the Laasti Frameworks. Provides interfaces to implement essential services",
-            "time": "2015-02-26 18:15:06"
+            "time": "2015-03-04 20:33:50"
         },
         {
             "name": "league/container",
@@ -49,12 +49,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/container.git",
-                "reference": "6ccc78324dbd9b49b33e925010fdc64c6d6ae111"
+                "reference": "619faf0cd55573014d7fc3eb43ef53108d2fbe66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/container/zipball/6ccc78324dbd9b49b33e925010fdc64c6d6ae111",
-                "reference": "6ccc78324dbd9b49b33e925010fdc64c6d6ae111",
+                "url": "https://api.github.com/repos/thephpleague/container/zipball/619faf0cd55573014d7fc3eb43ef53108d2fbe66",
+                "reference": "619faf0cd55573014d7fc3eb43ef53108d2fbe66",
                 "shasum": ""
             },
             "require": {
@@ -98,7 +98,7 @@
                 "injection",
                 "league"
             ],
-            "time": "2015-02-21 19:54:25"
+            "time": "2015-03-04 08:41:55"
         },
         {
             "name": "league/route",
@@ -106,12 +106,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/route.git",
-                "reference": "1549c952742e8c7c7e358c37b829daf0faa839ee"
+                "reference": "a79cc7ad0f3726fa6723eea1b1f04befd0fb760c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/route/zipball/1549c952742e8c7c7e358c37b829daf0faa839ee",
-                "reference": "1549c952742e8c7c7e358c37b829daf0faa839ee",
+                "url": "https://api.github.com/repos/thephpleague/route/zipball/a79cc7ad0f3726fa6723eea1b1f04befd0fb760c",
+                "reference": "a79cc7ad0f3726fa6723eea1b1f04befd0fb760c",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 "league",
                 "route"
             ],
-            "time": "2015-02-24 21:33:05"
+            "time": "2015-02-27 13:14:25"
         },
         {
             "name": "nikic/fast-route",
@@ -317,12 +317,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "5a87e6edaa9927e301ed6b16d230d977d14f1386"
+                "reference": "d1da796ba5565789a623052eb9f2cf59d57fec60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/5a87e6edaa9927e301ed6b16d230d977d14f1386",
-                "reference": "5a87e6edaa9927e301ed6b16d230d977d14f1386",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/d1da796ba5565789a623052eb9f2cf59d57fec60",
+                "reference": "d1da796ba5565789a623052eb9f2cf59d57fec60",
                 "shasum": ""
             },
             "require": {
@@ -359,7 +359,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2015-02-25 17:26:05"
+            "time": "2015-02-27 09:28:18"
         },
         {
             "name": "phpspec/prophecy",
@@ -671,12 +671,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "67896ddbec6e0e5a52020671e2cfdb3f93002241"
+                "reference": "47cce9883c58970fc2739d90990422e5d0c949bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/67896ddbec6e0e5a52020671e2cfdb3f93002241",
-                "reference": "67896ddbec6e0e5a52020671e2cfdb3f93002241",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/47cce9883c58970fc2739d90990422e5d0c949bb",
+                "reference": "47cce9883c58970fc2739d90990422e5d0c949bb",
                 "shasum": ""
             },
             "require": {
@@ -687,7 +687,7 @@
                 "ext-spl": "*",
                 "php": ">=5.3.3",
                 "phpspec/prophecy": "~1.3.1",
-                "phpunit/php-code-coverage": "~2.0",
+                "phpunit/php-code-coverage": "~2.0,>=2.0.11",
                 "phpunit/php-file-iterator": "~1.3",
                 "phpunit/php-text-template": "~1.2",
                 "phpunit/php-timer": "~1.0",
@@ -738,7 +738,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-02-26 18:00:51"
+            "time": "2015-03-02 06:10:41"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -746,12 +746,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "b752b41e3fead4feee99f3a2f2972cef517abb8b"
+                "reference": "37e984c0d004800c456658cb08580fdfd26d9c1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/b752b41e3fead4feee99f3a2f2972cef517abb8b",
-                "reference": "b752b41e3fead4feee99f3a2f2972cef517abb8b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/37e984c0d004800c456658cb08580fdfd26d9c1d",
+                "reference": "37e984c0d004800c456658cb08580fdfd26d9c1d",
                 "shasum": ""
             },
             "require": {
@@ -793,7 +793,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-01-18 10:44:19"
+            "time": "2015-03-02 06:02:35"
         },
         {
             "name": "sebastian/comparator",
@@ -1168,16 +1168,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "dev-master",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "1516e636f504793eea796f58c76ee6c3a5801b8f"
+                "reference": "5046b0e01c416fc2b06df961d0673c85bcdc896c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1516e636f504793eea796f58c76ee6c3a5801b8f",
-                "reference": "1516e636f504793eea796f58c76ee6c3a5801b8f",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5046b0e01c416fc2b06df961d0673c85bcdc896c",
+                "reference": "5046b0e01c416fc2b06df961d0673c85bcdc896c",
                 "shasum": ""
             },
             "require": {
@@ -1190,6 +1190,11 @@
                 "scripts/phpcbf"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "CodeSniffer.php",
@@ -1233,7 +1238,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2015-02-26 22:21:59"
+            "time": "2015-03-04 02:07:03"
         },
         {
             "name": "symfony/yaml",
@@ -1289,8 +1294,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "phpunit/phpunit": 20,
-        "squizlabs/php_codesniffer": 20
+        "laasti/application": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
