@@ -2,13 +2,16 @@
 
 namespace Laasti\Stack\Test;
 
+use Exception;
 use Laasti\Stack;
-use Laasti\Services\StackInterface;
-use Laasti\Services\MiddlewareInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Laasti\Stack\MiddlewareInterface;
+use Laasti\Stack\StackException;
+use Laasti\Stack\StackInterface;
+use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class StackTest extends \PHPUnit_Framework_TestCase
+class StackTest extends PHPUnit_Framework_TestCase
 {
 
     public function testStackInterface()
@@ -22,7 +25,7 @@ class StackTest extends \PHPUnit_Framework_TestCase
     {
         $stack = new Stack\Stack();
 
-        $middleware = $this->getMock('Laasti\Services\MiddlewareInterface');
+        $middleware = $this->getMock('Laasti\Stack\MiddlewareInterface');
         $middleware->expects($this->exactly(1))->method('handle')->will($this->returnValue(new Response));
         $this->assertTrue($middleware instanceof MiddlewareInterface);
 
@@ -32,13 +35,13 @@ class StackTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Laasti\Stack\StackException
+     * @expectedException  Laasti\Stack\StackException
      */
     public function testStackNoResponse()
     {
         $stack = new Stack\Stack();
 
-        $middleware = $this->getMock('Laasti\Services\MiddlewareInterface');
+        $middleware = $this->getMock('Laasti\Stack\MiddlewareInterface');
         $middleware->expects($this->exactly(1))->method('handle')->will($this->returnArgument(0));
         $this->assertTrue($middleware instanceof MiddlewareInterface);
 
@@ -50,12 +53,12 @@ class StackTest extends \PHPUnit_Framework_TestCase
     {
         $stack = new Stack\Stack();
 
-        $middleware = $this->getMock('Laasti\Services\MiddlewareInterface');
+        $middleware = $this->getMock('Laasti\Stack\MiddlewareInterface');
         $middleware->expects($this->any())->method('handle')->will($this->returnArgument(0));
         $stack->push($middleware);
         
         //This middleware should be called first
-        $middleware = $this->getMock('Laasti\Services\MiddlewareInterface');
+        $middleware = $this->getMock('Laasti\Stack\MiddlewareInterface');
         $middleware->expects($this->exactly(1))->method('handle')->will($this->returnValue(new Response));
         $stack->unshift($middleware);
 
@@ -71,12 +74,12 @@ class StackTest extends \PHPUnit_Framework_TestCase
         //Terminate should be called
         $middleware = $this->getMock('Laasti\Stack\Test\TerminableMiddleware');
         $middleware->expects($this->any())->method('handle')->will($this->returnValue(new Response));
-        $middleware->expects($this->exactly(1))->method('terminate')->will($this->throwException(new \Exception('My Test Exception')));
+        $middleware->expects($this->exactly(1))->method('terminate')->will($this->throwException(new Exception('My Test Exception')));
         $stack->push($middleware);
 
         try {
             $stack->close(new Request, new Response);
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             $this->assertEquals('My Test Exception', $e->getMessage());
         }
 
@@ -90,17 +93,17 @@ class StackTest extends \PHPUnit_Framework_TestCase
         //Terminate is called from last middleware to first middleware
         $middleware = $this->getMock('Laasti\Stack\Test\TerminableMiddleware');
         $middleware->expects($this->any())->method('handle')->will($this->returnValue(new Response));
-        $middleware->expects($this->exactly(1))->method('terminate')->will($this->throwException(new \Exception('My Test Exception Push')));
+        $middleware->expects($this->exactly(1))->method('terminate')->will($this->throwException(new Exception('My Test Exception Push')));
         $stack->push($middleware);
 
         $middleware2 = $this->getMock('Laasti\Stack\Test\TerminableMiddleware');
         $middleware2->expects($this->any())->method('handle')->will($this->returnValue(new Response));
-        $middleware2->expects($this->any())->method('terminate')->will($this->throwException(new \Exception('My Test Exception Unshift')));
+        $middleware2->expects($this->any())->method('terminate')->will($this->throwException(new Exception('My Test Exception Unshift')));
         $stack->unshift($middleware2);
 
         try {
             $stack->close(new Request, new Response);
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             $this->assertEquals('My Test Exception Push', $e->getMessage());
         }
 

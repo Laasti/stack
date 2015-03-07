@@ -1,5 +1,6 @@
 <?php
 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,14 +9,16 @@
 
 namespace Laasti\Stack;
 
-use \Exception;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Description of StackException
  *
  * @author Sonia
  */
-class StackException extends Exception
+interface MiddlewareTerminableInterface
 {
+
     //put your code here
+    public function terminate(Request $request, Response $response);
 }

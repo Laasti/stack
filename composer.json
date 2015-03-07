@@ -8,9 +8,8 @@
             "email": "contact@nebulousweb.com"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "alpha",
     "require": {
-        "laasti/application": "dev-develop",
         "symfony/http-foundation": "~2.6"
     },
     "autoload": {

@@ -8,8 +8,8 @@
 
 namespace Laasti\Stack\Test;
 
-use Laasti\Services\MiddlewareInterface;
-use Laasti\Services\MiddlewareTerminableInterface;
+use Laasti\Stack\MiddlewareInterface;
+use Laasti\Stack\MiddlewareTerminableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,16 +20,20 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TerminableMiddleware implements MiddlewareInterface, MiddlewareTerminableInterface
 {
+
     /**
      *
      * @param Request $request
      * @return Request|Response
      */
-    public function handle(Request $request) {
+    public function handle(Request $request)
+    {
         return $request;
     }
-    
-    public function terminate(Request $request, Response $response) {
+
+    public function terminate(Request $request, Response $response)
+    {
         //Does nothing
     }
+
 }
