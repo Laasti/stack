@@ -5,7 +5,6 @@ namespace Laasti\Stack\Test;
 use Exception;
 use Laasti\Stack;
 use Laasti\Stack\MiddlewareInterface;
-use Laasti\Stack\StackException;
 use Laasti\Stack\StackInterface;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -107,6 +106,26 @@ class StackTest extends PHPUnit_Framework_TestCase
             $this->assertEquals('My Test Exception Push', $e->getMessage());
         }
 
+    }
+
+    public function testStackPassesArgsToMiddlewares() {
+        require_once 'TerminableMiddleware.php';
+        $stack = new Stack\Stack();
+        $request = new Request;
+        $response = new Response;
+
+        $middleware = $this->getMock('Laasti\Stack\Test\TerminableMiddleware');
+        $middleware->expects($this->exactly(1))->method('handle')->with($this->equalTo($request), $this->equalTo(2));
+        $middleware->expects($this->exactly(1))->method('terminate')->with($this->equalTo($request),$this->equalTo($response), $this->equalTo(2));
+        $stack->push($middleware, 2);
+
+        //Valid middleware so the test does not crash
+        $middleware = $this->getMock('Laasti\Stack\MiddlewareInterface');
+        $middleware->expects($this->any())->method('handle')->will($this->returnValue(new Response));
+        $stack->push($middleware);
+
+        $stack->execute($request);
+        $stack->close($request, $response);
     }
 
 
