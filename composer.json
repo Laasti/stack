@@ -8,8 +8,8 @@
             "email": "contact@nebulousweb.com"
         }
     ],
-    "minimum-stability": "alpha",
     "require": {
+        "php" : ">=5.4.0",
         "symfony/http-foundation": "~2.6"
     },
     "autoload": {
@@ -17,9 +17,11 @@
             "Laasti\\Stack\\": "src/"
         }
     },
+    "suggest": {
+        "league/container": "Required to use the ContainerStack class."
+    },
     "require-dev": {
-        "phpunit/phpunit": "~4.5",
-        "squizlabs/php_codesniffer": "~2.3"
+        "league/container": "~1.3"
     },
     "repositories": [
         {

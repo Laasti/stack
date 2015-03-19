@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Sonia
  */
-class Stack implements StackInterface
+class SimpleStack implements StackInterface
 {
 
     /**
@@ -36,10 +36,14 @@ class Stack implements StackInterface
      * You can pass additional arguments to the method. They will be used when calling handle/close methods.
      *
      * @param MiddlewareInterface $middleware
-     * @return \Laasti\Stack\Stack
+     * @return \Laasti\Stack\SimpleStack
      */
-    public function unshift(MiddlewareInterface $middleware)
+    public function unshift($middleware)
     {
+        if (!$middleware instanceof MiddlewareInterface) {
+            throw new \InvalidArgumentException('The first argument must be an instance of MiddlewareInterface.');
+        }
+        
         array_unshift($this->middlewares, func_get_args());
 
         if ($middleware instanceof MiddlewareTerminableInterface) {
@@ -55,10 +59,14 @@ class Stack implements StackInterface
      * You can pass additional arguments to the method. They will be used when calling handle/close methods.
      *
      * @param MiddlewareInterface $middleware
-     * @return \Laasti\Stack\Stack
+     * @return \Laasti\Stack\SimpleStack
      */
-    public function push(MiddlewareInterface $middleware)
+    public function push($middleware)
     {
+        if (!$middleware instanceof MiddlewareInterface) {
+            throw new \InvalidArgumentException('The first argument must be an instance of MiddlewareInterface.');
+        }
+        
         array_push($this->middlewares, func_get_args());
 
         if ($middleware instanceof MiddlewareTerminableInterface) {

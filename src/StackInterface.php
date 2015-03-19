@@ -18,9 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
 interface StackInterface
 {
 
-    public function unshift(MiddlewareInterface $obj);
+    public function unshift($obj);
 
-    public function push(MiddlewareInterface $obj);
+    public function push($obj);
 
     /**
      *
