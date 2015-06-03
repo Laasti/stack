@@ -26,6 +26,8 @@ $di = new League\Container();
 $stack = new Laasti\Stack\ContainerStack($di);
 $stack->push('DependencyName', /*, other args to pass to handle method */);
 
+You can add items to the stack during the stack execution.
+
 //Run the application
 //Throws a StackException if no response returned
 $response = $stack->execute(new Symfony\Component\HttpFoundation\Request());
