@@ -1,33 +1,34 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Laasti\Stack;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- *
- * @author Sonia
+ * Interface used by middleware stacks
  */
 interface StackInterface
 {
 
-    public function unshift($obj);
-
-    public function push($obj);
+    /**
+     * Prepend a middleware to the stack
+     * @param mixed
+     */
+    public function unshift($middleware);
 
     /**
+     * Append a middleware to the stack
+     * @param mixed
+     */
+    public function push($middleware);
+
+    /**
+     * Goes through the stack of middlewares to generate a Response
      *
      * @param Request $request
      * @return Response
      */
     public function execute(Request $request);
-    
-    public function close(Request $request, Response $response);
+
 }
