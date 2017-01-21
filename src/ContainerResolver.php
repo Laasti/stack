@@ -2,7 +2,6 @@
 
 namespace Laasti\Stack;
 
-use Laasti\Stack\ResolverInterface;
 use League\Container\ContainerInterface;
 
 /**
@@ -13,10 +12,10 @@ class ContainerResolver implements ResolverInterface
 
     /**
      * The container
-     * @var ContainerInterface 
+     * @var ContainerInterface
      */
     protected $container;
-    
+
     /**
      * Constructor
      * @param ContainerInterface $container
@@ -28,14 +27,14 @@ class ContainerResolver implements ResolverInterface
 
     /**
      * Retrieves a middleware from the container
-     * 
+     *
      * @param string $middleware
      * @return mixed
      */
     public function resolve($middleware)
     {
         //Not a string, should be an object
-        if (! is_string($middleware)) {
+        if (!is_string($middleware)) {
             return $middleware;
         }
         return $this->container->get($middleware);

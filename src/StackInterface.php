@@ -30,5 +30,4 @@ interface StackInterface
      * @return Response
      */
     public function execute(Request $request);
-
 }

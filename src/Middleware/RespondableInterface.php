@@ -19,5 +19,4 @@ interface RespondableInterface
      * @return Response
      */
     public function respond(Request $request, Response $response);
-
 }
