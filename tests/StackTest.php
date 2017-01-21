@@ -65,7 +65,6 @@ class StackTest extends PHPUnit_Framework_TestCase
         }
 
         $this->fail();
-
     }
 
     public function testInvalidPushMiddleware()
@@ -105,14 +104,15 @@ class StackTest extends PHPUnit_Framework_TestCase
         $this->expectOutputString($responseMessage);
         $middleware->expects($this->exactly(0))->method('prepare')->will($this->returnValue(new Request));
         $middleware2->expects($this->exactly(1))->method('prepare')->will($this->returnValue(new Response($responseMessage)));
-        
+
         $stack->push($middleware);
         $stack->unshift($middleware2);
 
         $stack->execute(new Request);
     }
 
-    public function testMiddlewareArguments() {
+    public function testMiddlewareArguments()
+    {
         $stack = new Stack\Stack();
 
         $responseMessage = 'Test response';
@@ -123,24 +123,26 @@ class StackTest extends PHPUnit_Framework_TestCase
         $middleware2 = $this->getMock('Laasti\Stack\Middleware\RespondableInterface');
         $middleware3 = $this->getMock('Laasti\Stack\Middleware\CloseableInterface');
 
-        $middleware->expects($this->exactly(1))->method('prepare')->with($this->callback(function($request) {
+        $middleware->expects($this->exactly(1))->method('prepare')->with($this->callback(function ($request) {
             return $request instanceof Request;
         }), 1)->will($this->returnValue(new Response($responseMessage)));
         $middleware2->expects($this->exactly(1))->method('respond')->with(
-            $this->callback(function($request) {
-                return  $request instanceof Request;
+            $this->callback(function ($request) {
+                return $request instanceof Request;
             }),
-            $this->callback(function($response) {
-                return  $response instanceof Response;
-            }), 2
+            $this->callback(function ($response) {
+                return $response instanceof Response;
+            }),
+            2
         )->will($this->returnValue(new Response($responseMessage)));
         $middleware3->expects($this->exactly(1))->method('close')->with(
-            $this->callback(function($request) {
-                return  $request instanceof Request;
+            $this->callback(function ($request) {
+                return $request instanceof Request;
             }),
-            $this->callback(function($response) {
-                return  $response instanceof Response;
-            }), 3
+            $this->callback(function ($response) {
+                return $response instanceof Response;
+            }),
+            3
         )->will($this->returnValue(new Response($responseMessage)));
 
         $stack->push($middleware, 1);
@@ -148,38 +150,37 @@ class StackTest extends PHPUnit_Framework_TestCase
         $stack->push($middleware3, 3);
 
         $stack->execute(new Request);
-
     }
 
     public function testStackPhases()
-            {
+    {
         $stack = new Stack\Stack();
 
         $responseMessage = 'Test response';
 
         $this->expectOutputString($responseMessage);
-        
+
         $middleware = $this->getMock('Laasti\Stack\Middleware\PrepareableInterface');
         $middleware2 = $this->getMock('Laasti\Stack\Middleware\RespondableInterface');
         $middleware3 = $this->getMock('Laasti\Stack\Middleware\CloseableInterface');
 
-        $middleware->expects($this->exactly(1))->method('prepare')->with($this->callback(function($request) {
-            return  count(func_get_args()) === 1 && $request instanceof Request;
+        $middleware->expects($this->exactly(1))->method('prepare')->with($this->callback(function ($request) {
+            return count(func_get_args()) === 1 && $request instanceof Request;
         }))->will($this->returnValue(new Response($responseMessage)));
         $middleware2->expects($this->exactly(1))->method('respond')->with(
-            $this->callback(function($request) {
-                return  $request instanceof Request;
+            $this->callback(function ($request) {
+                return $request instanceof Request;
             }),
-            $this->callback(function($response) {
-                return  $response instanceof Response;
+            $this->callback(function ($response) {
+                return $response instanceof Response;
             })
         )->will($this->returnValue(new Response($responseMessage)));
         $middleware3->expects($this->exactly(1))->method('close')->with(
-            $this->callback(function($request) {
-                return  $request instanceof Request;
+            $this->callback(function ($request) {
+                return $request instanceof Request;
             }),
-            $this->callback(function($response) {
-                return  $response instanceof Response;
+            $this->callback(function ($response) {
+                return $response instanceof Response;
             })
         )->will($this->returnValue(new Response($responseMessage)));
 
@@ -190,7 +191,8 @@ class StackTest extends PHPUnit_Framework_TestCase
         $stack->execute(new Request);
     }
 
-    public function testRespondOverwritePrepare() {
+    public function testRespondOverwritePrepare()
+    {
         $stack = new Stack\Stack();
 
         $prepareMessage = 'Test prepare';
@@ -225,13 +227,11 @@ class StackTest extends PHPUnit_Framework_TestCase
         $stack->push($middleware2);
 
         $responseMessage = 'Test response';
-        
+
         $this->expectOutputString($responseMessage);
         $middleware->expects($this->exactly(1))->method('prepare')->will($this->returnValue(new Response($responseMessage)));
         $middleware2->expects($this->exactly(0))->method('prepare')->will($this->returnValue(new Response($responseMessage)));
 
         $stack->execute(new Request);
-
     }
-
 }

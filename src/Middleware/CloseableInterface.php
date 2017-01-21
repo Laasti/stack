@@ -18,5 +18,4 @@ interface CloseableInterface
      * @param Response $response
      */
     public function close(Request $request, Response $response);
-
 }

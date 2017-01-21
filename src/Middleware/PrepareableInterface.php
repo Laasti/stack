@@ -19,5 +19,4 @@ interface PrepareableInterface
      * @return Request|Response
      */
     public function prepare(Request $request);
-
 }

@@ -2,7 +2,7 @@
 
 namespace Laasti\Stack;
 
-use \Exception;
+use Exception;
 
 /**
  * Exception used when the execution method from the stack fails

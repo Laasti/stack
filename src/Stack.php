@@ -49,7 +49,7 @@ class Stack implements StackInterface
 
     /**
      * Constructor
-     * 
+     *
      * @param ResolverInterface $resolver
      */
     public function __construct(ResolverInterface $resolver = null)
@@ -68,6 +68,67 @@ class Stack implements StackInterface
     {
         $this->addMiddleware($middleware, func_get_args(), false);
         return $this;
+    }
+
+    /**
+     * Adds a middleware to aggregates
+     * @param mixed $middleware
+     * @param array $args
+     * @param bool $push Whether to push the middleware, false, or unshift, true
+     * @throws InvalidArgumentException
+     */
+    private function addMiddleware($middleware, $args, $push = true)
+    {
+        $instance = $this->resolve($middleware);
+
+        $types = $this->getTypes($instance);
+
+        if (!count($types)) {
+            throw new InvalidArgumentException('The first argument must be an instance of PrepareableInterface, RespondableInterface or CloseableInterface.');
+        }
+
+        //Replace middleware definition with instance
+        $args[0] = $instance;
+
+        foreach ($types as $type) {
+            if ($push) {
+                array_push($this->{$type . 'Middlewares'}, $args);
+            } else {
+                array_unshift($this->{$type . 'Middlewares'}, $args);
+            }
+        }
+    }
+
+    /**
+     * Resolve the argument to an actual middleware instance
+     * @param mixed $definition
+     * @return mixed
+     */
+    private function resolve($definition)
+    {
+        return !is_null($this->resolver) ? $this->resolver->resolve($definition) : $definition;
+    }
+
+    /**
+     * Returns the applicable types for the middleware
+     * @param mixed $middleware
+     * @return array
+     */
+    private function getTypes($middleware)
+    {
+        $types = [];
+
+        if ($middleware instanceof PrepareableInterface) {
+            $types[] = 'prepareable';
+        }
+        if ($middleware instanceof RespondableInterface) {
+            $types[] = 'respondable';
+        }
+        if ($middleware instanceof CloseableInterface) {
+            $types[] = 'closeable';
+        }
+
+        return $types;
     }
 
     /**
@@ -98,18 +159,17 @@ class Stack implements StackInterface
         $response = null;
 
         foreach ($phases as $phase) {
-
             $key = 0;
 
             if ($phase === 'respond' && is_null($response)) {
                 throw new StackException;
-            } else if ($phase === 'close' && $key === 0) {
+            } elseif ($phase === 'close' && $key === 0) {
                 $response->send();
             }
 
             if ($phase === 'prepare' && count($this->{$phase . 'ableMiddlewares'}) === 0) {
                 throw new StackException('You must at least add one prepareableMiddleware that generates a Response.');
-            } else if (count($this->{$phase . 'ableMiddlewares'}) === 0) {
+            } elseif (count($this->{$phase . 'ableMiddlewares'}) === 0) {
                 continue;
             }
 
@@ -132,7 +192,7 @@ class Stack implements StackInterface
                 if ($phase === 'prepare' && $return instanceof Response) {
                     $response = $return;
                     break;
-                } else if ($phase === 'respond') {
+                } elseif ($phase === 'respond') {
                     //Reassign response in case it was recreated during that phase
                     $response = $return;
                 }
@@ -141,67 +201,4 @@ class Stack implements StackInterface
             }
         }
     }
-
-    /**
-     * Adds a middleware to aggregates
-     * @param mixed $middleware
-     * @param array $args
-     * @param bool $push Whether to push the middleware, false, or unshift, true
-     * @throws InvalidArgumentException
-     */
-    private function addMiddleware($middleware, $args, $push = true)
-    {
-        $instance = $this->resolve($middleware);
-
-        $types = $this->getTypes($instance);
-
-        if (!count($types)) {
-            throw new InvalidArgumentException('The first argument must be an instance of PrepareableInterface, RespondableInterface or CloseableInterface.');
-        }
-
-        //Replace middleware definition with instance
-        $args[0] = $instance;
-
-        foreach ($types as $type) {
-            if ($push) {
-                array_push($this->{$type . 'Middlewares'}, $args);
-            } else {
-                array_unshift($this->{$type . 'Middlewares'}, $args);
-            }
-        }
-
-    }
-
-    /**
-     * Returns the applicable types for the middleware
-     * @param mixed $middleware
-     * @return array
-     */
-    private function getTypes($middleware)
-    {
-        $types = [];
-
-        if ($middleware instanceof PrepareableInterface) {
-            $types[] = 'prepareable';
-        }
-        if ($middleware instanceof RespondableInterface) {
-            $types[] = 'respondable';
-        }
-        if ($middleware instanceof CloseableInterface) {
-            $types[] = 'closeable';
-        }
-
-        return $types;
-    }
-
-    /**
-     * Resolve the argument to an actual middleware instance
-     * @param mixed $definition
-     * @return mixed
-     */
-    private function resolve($definition)
-    {
-        return !is_null($this->resolver) ? $this->resolver->resolve($definition) : $definition;
-    }
-
 }
